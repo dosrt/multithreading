@@ -1,4 +1,4 @@
-import QueueClient
+from Manager import QueueClient
 
 class Minion (QueueClient): 
     pass
