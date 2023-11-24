@@ -15,13 +15,14 @@ class Task :
         # Initialiser x comme un vecteur nul
         self.x = np.zeros(size)
     
-    def work(self): 
-        print("ID_Task=", self.identifier)
+    def work(self):
+        print(f"Task {self.identifier} is processing.")
         start = perf_counter()
         self.x = np.linalg.solve(self.a, self.b)
         end = perf_counter()
         self.time = end - start
-        print("Running time: ", self.time)
+        print(f"Task {self.identifier} completed in {self.time:.4f} seconds.")
+
 
 ## Debug 
 """
