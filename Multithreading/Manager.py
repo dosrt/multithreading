@@ -4,7 +4,7 @@ import os
 
 
 PORT = 5000
-KEY = b"3cnepiuIUE54"
+KEY = b"password"
 class QueueManager(BaseManager):
     pass
 
@@ -32,3 +32,4 @@ result_queue = Queue()
 # Enregistrement des queues avec le gestionnaire
 QueueManager.register('get_task_queue', callable=lambda: task_queue)
 QueueManager.register('get_result_queue', callable=lambda: result_queue)
+
