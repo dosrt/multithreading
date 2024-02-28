@@ -1,14 +1,12 @@
-from Manager import QueueManager
+from Manager import QueueClient
 from multiprocessing import Process
 
 class Minion:
     from Manager import QueueManager
 
 class Minion:
-    def __init__(self, manager):
-        self.manager = manager
-        self.task_queue = manager.get_task_queue()
-        self.result_queue = manager.get_result_queue()
+    def __init__(self):
+        self.client = QueueClient()
 
     def process_task(self, task):
         task.work()
@@ -21,8 +19,5 @@ class Minion:
                 self.process_task(task)
 
 if __name__ == '__main__':
-    manager = QueueManager(address=('localhost', 5000), authkey=b'password')
-    manager.connect()
-
-    minion = Minion(manager)
+    minion = Minion()
     minion.start()

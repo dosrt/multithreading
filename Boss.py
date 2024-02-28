@@ -1,25 +1,24 @@
-from Manager import QueueManager
-from multiprocessing import Process
+from Manager import QueueClient
 from Task import Task
 
 class Boss:
-    def __init__(self, manager):
-        self.manager = manager
-        self.task_queue = manager.get_task_queue()
+    def __init__(self, num_tasks):
+        self.client = QueueClient()
+        self.num_tasks = num_tasks
+        self.task_queue = self.client.getTask() #certainement pas obligatoire de récupérer le queue
 
     def add_task(self, task):
-        self.task_queue.put(task)
+        self.client.tasks.put(task)
 
     def start(self):
         # Ajouter des tâches de test
-        for i in range(5):
+        for i in range(self.num_tasks):
             task = Task(i, 6000)
             self.add_task(task)
             print(f"Task {i} added to the task queue.")
 
 if __name__ == '__main__':
-    manager = QueueManager(address=('localhost', 5000), authkey=b'password')
-    manager.start()
-
-    boss = Boss(manager)
+    task_number = 5 
+    print(f"Il faudra traiter {task_number} tâches")
+    boss = Boss(task_number)
     boss.start()

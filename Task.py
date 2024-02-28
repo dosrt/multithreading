@@ -1,6 +1,6 @@
 import numpy as np 
 from time import perf_counter
-
+import json
 # recupérer sur parallel-101
 
 class Task : 
@@ -24,11 +24,29 @@ class Task :
         print(f"Task {self.identifier} completed in {self.time:.4f} seconds.")
 
     def to_json(self) -> str:
-        pass
+        task_dict = {
+            "identifier": self.identifier,
+            "size": self.size,
+            "a": self.a.tolist(),
+            "b": self.b.tolist(),
+            "time": self.time,
+            "x": self.x.tolist()
+        }
+        return json.dumps(task_dict)
 
-## Debug 
-"""
-if __name__ == "__main__":
-    Task_one = Task(1, 6000)
-    Task_one.work()
-"""
+    @classmethod
+    def from_json(cls, text: str) -> "Task":
+        task_dict = json.loads(text)
+        task = cls(task_dict["identifier"], task_dict["size"])
+        task.a = np.array(task_dict["a"])
+        task.b = np.array(task_dict["b"])
+        task.time = task_dict["time"]
+        task.x = np.array(task_dict["x"])
+        return task
+
+    def __eq__(self, other: "Task") -> bool:
+        return (self.identifier == other.identifier) and (self.size == other.size) and \
+               np.array_equal(self.a, other.a) and np.array_equal(self.b, other.b) and \
+               (self.time == other.time) and np.array_equal(self.x, other.x)
+
+

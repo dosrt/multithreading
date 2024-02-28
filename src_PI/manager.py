@@ -1,14 +1,20 @@
-from multiprocessing.managers import BaseManager
-from multiprocessing import Queue
-import os
+#!/usr/bin/env python3
 
-PORT = 5000
-KEY = b"3cnepiuIUE54"
+import multiprocessing
+import os
+from multiprocessing.managers import BaseManager
+
+PORT = 7481
+KEY = b"AiZa5Uavcoh3PiajvaeTee5z"  # keep it secret, keep it safe !
+
 
 class QueueManager(BaseManager):
-    pass
+    """This Manager holds a Queue and waits for clients to use it."""
 
-class QueueClient() :
+
+class QueueClient:
+    """Base class for users of the Queue."""
+
     def __init__(self):
         QueueManager.register("get_tasks")
         QueueManager.register("get_results")
@@ -19,21 +25,12 @@ class QueueClient() :
         self.tasks = manager.get_tasks()
         self.results = manager.get_results()
 
-    def getTask(self):
-        return self.tasks
 
-    def getResult(self):
-        return self.results
-
-if __name__ == "__main__" : 
-    #Définition des queues
-    task_queue = Queue()
-    result_queue = Queue()
-
-    # Enregistrement des queues avec le gestionnaire
-    QueueManager.register('get_task_queue', callable=lambda: task_queue)
-    QueueManager.register('get_result_queue', callable=lambda: result_queue)
-
+if __name__ == "__main__":
+    task_queue = multiprocessing.Queue()
+    result_queue = multiprocessing.Queue()
+    QueueManager.register("get_tasks", callable=lambda: task_queue)
+    QueueManager.register("get_results", callable=lambda: result_queue)
     try:
         QueueManager(address=("", PORT), authkey=KEY).get_server().serve_forever()
     finally:
