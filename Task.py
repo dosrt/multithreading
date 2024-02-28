@@ -1,3 +1,4 @@
+##### TASK ####
 import numpy as np 
 from time import perf_counter
 import json
@@ -5,7 +6,7 @@ import json
 
 class Task : 
     
-    def __init__ (self, id, size ): 
+    def __init__ (self, id, size): 
 
         self.identifier = id 
         self.size = size
@@ -25,7 +26,7 @@ class Task :
 
     def to_json(self) -> str:
         task_dict = {
-            "identifier": self.identifier,
+            "id": self.identifier,
             "size": self.size,
             "a": self.a.tolist(),
             "b": self.b.tolist(),
@@ -37,7 +38,7 @@ class Task :
     @classmethod
     def from_json(cls, text: str) -> "Task":
         task_dict = json.loads(text)
-        task = cls(task_dict["identifier"], task_dict["size"])
+        task = cls(task_dict["id"], task_dict["size"])
         task.a = np.array(task_dict["a"])
         task.b = np.array(task_dict["b"])
         task.time = task_dict["time"]

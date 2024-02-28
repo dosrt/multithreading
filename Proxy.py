@@ -18,7 +18,7 @@ class Proxy(BaseHTTPRequestHandler):
 
 
 def run(server_class=HTTPServer, handler_class=Proxy):
-    server_address = ("", 8000)
+    server_address = ("27.0.0.1", 8000)
     httpd = server_class(server_address, handler_class)
     httpd.serve_forever()
 
